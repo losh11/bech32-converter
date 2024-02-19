@@ -135,7 +135,7 @@ export declare class BitcoinAddress {
    * Human-readable prefix. Equals `'bc'` (for mainnet addresses)
    * or `'tb'` (for testnet addresses).
    */
-  prefix: 'bc' | 'tb';
+  prefix: 'bc' | 'tb' | 'ltc'| 'tltc';
   /**
    * Script version. An integer between 0 and 16 (inclusive).
    */
@@ -164,7 +164,7 @@ export declare class BitcoinAddress {
    *
    * @throws {Error} If provided fields do not pass validation.
    */
-  constructor(prefix: 'bc' | 'tb', scriptVersion: number, data: Uint8Array);
+  constructor(prefix: 'bc' | 'tb' | 'ltc'| 'tltc', scriptVersion: number, data: Uint8Array);
 
   /**
    * Encodes this address in Bech32 or Bech32m format, depending on the script version.

@@ -220,7 +220,7 @@ export class BitcoinAddress {
    * Human-readable prefix. Equal to `'bc'` (for mainnet addresses)
    * or `'tb'` (for testnet addresses).
    */
-  prefix: 'bc' | 'tb';
+  prefix: 'bc' | 'tb' | 'ltc' | 'tltc';
 
   /**
    * Script version. An integer between 0 and 16 (inclusive).
@@ -247,8 +247,8 @@ export class BitcoinAddress {
     const { prefix, data, encoding } = decodeTo5BitArray(message);
 
     // Extra check to satisfy Flow.
-    if (prefix !== 'bc' && prefix !== 'tb') {
-      throw new Error('Invalid human-readable prefix, "bc" or "tb" expected');
+    if (prefix !== 'bc' && prefix !== 'tb' && prefix !== 'ltc' && prefix !== 'tltc') {
+      throw new Error('Invalid human-readable prefix, "bc" or "tb" or "ltc" or "tltc" expected');
     }
 
     const scriptVersion = data[0];
@@ -261,9 +261,9 @@ export class BitcoinAddress {
     return new this(prefix, scriptVersion, from5BitArray(data.subarray(1)));
   }
 
-  constructor(prefix: 'bc' | 'tb', scriptVersion: number, data: Uint8Array) {
-    if (prefix !== 'bc' && prefix !== 'tb') {
-      throw new Error('Invalid human-readable prefix, "bc" or "tb" expected');
+  constructor(prefix: 'bc' | 'tb' | 'ltc' | 'tltc', scriptVersion: number, data: Uint8Array) {
+    if (prefix !== 'bc' && prefix !== 'tb' && prefix !== 'ltc' && prefix !== 'tltc') {
+      throw new Error('Invalid human-readable prefix, "bc" or "tb" or "ltc" or "tltc" expected');
     }
     if ((scriptVersion < 0) || (scriptVersion > 16)) {
       throw new RangeError('Invalid scriptVersion, value in range [0, 16] expected');

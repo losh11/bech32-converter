@@ -133,6 +133,10 @@
                         <label for="btc-mainnet" class="btn btn-outline-primary">Mainnet</label>
                         <input type="radio" class="btn-check" name="btc-network-options" id="btc-testnet" autocomplete="off">
                         <label for="btc-testnet" class="btn btn-outline-primary">Testnet</label>
+                        <input type="radio" class="btn-check" name="btc-network-options" id="ltc-mainnet" autocomplete="off">
+                        <label for="ltc-mainnet" class="btn btn-outline-primary">LTC mainnet</label>
+                        <input type="radio" class="btn-check" name="btc-network-options" id="ltc-testnet" autocomplete="off">
+                        <label for="ltc-testnet" class="btn btn-outline-primary">LTC Testnet</label>
                       </div>
                     </div>
                   </div>
@@ -265,7 +269,16 @@
         if (!buffer) throw new TypeError('Invalid hex encoding of data');
 
         if (btc) {
-          const prefix = document.getElementById('btc-mainnet').checked ? 'bc' : 'tb';
+          let prefix
+          if (document.getElementById('btc-mainnet').checked){
+            prefix = 'bc'
+          } else if (document.getElementById('btc-testnet').checked) {
+            prefix = 'tb'
+          } else if (document.getElementById('ltc-mainnet').checked) {
+            prefix = 'ltc'
+          } else if (document.getElementById('ltc-testnet').checked) {
+            prefix = 'tltc'
+          }
           const version = parseInt(scriptVersion.value);
           const btcAddress = new bech32.BitcoinAddress(prefix, version, buffer);
           enc = btcAddress.encode();
@@ -297,9 +310,22 @@
           dec = bech32.BitcoinAddress.decode(encoded.value);
           scriptVersion.value = dec.scriptVersion;
 
-          const selectedNetwork = (dec.prefix === 'bc')
-            ? document.getElementById('btc-mainnet')
-            : document.getElementById('btc-testnet');
+          let selectedNetwork;
+          switch (dec.prefix) {
+            case 'bc':
+              selectedNetwork = document.getElementById('btc-mainnet')
+              break;
+            case 'tb':
+              selectedNetwork = document.getElementById('btc-testnet')
+              break;
+            case 'ltc':
+              selectedNetwork = document.getElementById('ltc-mainnet')
+              break;
+            case 'tltc':
+              selectedNetwork = document.getElementById('ltc-testnet')
+              break;
+          }
+
           document.querySelector('input[name=btc-network-options]').parentElement.classList.remove('active');
           selectedNetwork.checked = true;
           selectedNetwork.parentElement.classList.add('active');
